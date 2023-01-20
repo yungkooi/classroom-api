@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  server:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysqldb
+  mysqldb:
+    platform: linux/arm64/v8
+    image: "mysql:8"
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: classroomDB
+      MYSQL_USER: yungkooi
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
