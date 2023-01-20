@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "760fe5b0-48e1-4f0e-8611-969f5fba5cfe",
+		"name": "Classroom API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Teachers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/teachers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"teachers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"teacher\" : \"testTeacher1@abc.com\",\n    \"students\": [\n        \"testStudent1@abc.com\",\n        \"testStudent2@abc.com\",\n        \"testStudent3@abc.com\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Common Students",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "max",
+						"value": "10000",
+						"type": "text"
+					},
+					{
+						"key": "sort",
+						"value": "salary",
+						"type": "text"
+					},
+					{
+						"key": "min",
+						"value": "3000",
+						"type": "text"
+					},
+					{
+						"key": "offset",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "limit",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/commonstudents?teacher=testTeacher1%40abc.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"commonstudents"
+					],
+					"query": [
+						{
+							"key": "teacher",
+							"value": "testTeacher1%40abc.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Students",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Suspend Student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"student\": \"testStudent3@abc.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/suspend",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"suspend"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Notification",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"teacher\": \"testTeacher1@abc.com\",\n    \"notification\": \"Hello students! @testStudent3@abc.com @testStudent4@abc.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/retrievefornotifications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"retrievefornotifications"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
