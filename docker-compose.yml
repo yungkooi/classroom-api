@@ -8,9 +8,8 @@ services:
     depends_on:
       - mysqldb
   mysqldb:
-    platform: linux/arm64/v8
-    image: "mysql:8"
-    restart: always
+    platform: linux/x86_64
+    image: "mysql:5.7"
     ports:
       - 3307:3306
     environment:
