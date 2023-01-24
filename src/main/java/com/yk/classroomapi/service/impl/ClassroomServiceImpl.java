@@ -10,6 +10,7 @@ import com.yk.classroomapi.service.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,13 +39,12 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public void register(RegisterRequest registerRequest) {
 
-        Teacher teacher = teacherRepository.findByEmail(registerRequest.getTeacher()).orElse(null);
+        Teacher teacher = teacherRepository.findByEmail(registerRequest.getTeacher())
+                .orElse(new Teacher(registerRequest.getTeacher()));
 
-        if (teacher == null) {
-            teacher = new Teacher(registerRequest.getTeacher());
-        }
-
-        //To remove existing student object first, else will throw duplicate error
+        /**
+         * To remove existing student object first, else will throw duplicate error
+         */
         Set<Student> newStudentsToRegister = convertStudentsToObjSet(registerRequest.getStudents());
         Set<String> existingStudents = convertStudentsToStrSet(teacher.getStudents());
         newStudentsToRegister.removeIf(s -> existingStudents.contains(s.getEmail()));
@@ -55,11 +55,30 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public CommonStudentResponse getCommonStudents(String teacherEmail) {
-        Teacher teacher = teacherRepository.findByEmail(teacherEmail)
-                .orElseThrow(() -> new ResourceNotFoundException("teacher", teacherEmail));
+    public CommonStudentResponse getCommonStudents(List<String> teacherList) {
 
-        return new CommonStudentResponse(convertStudentsToStrSet(teacher.getStudents()));
+        if (teacherList.size() == 1) {
+            Teacher teacher = teacherRepository.findByEmail(teacherList.get(0))
+                    .orElseThrow(() -> new ResourceNotFoundException("teacher", teacherList.get(0)));
+            return new CommonStudentResponse(convertStudentsToStrSet(teacher.getStudents()));
+
+        }
+
+        /**
+         * To find common students between 2 or more teachers,
+         * compile all students in a list first, then return only the duplicates
+         */
+        List<String> studentList = new ArrayList<>();
+        teacherList.forEach(t -> {
+            Teacher teacher = teacherRepository.findByEmail(t)
+                    .orElseThrow(() -> new ResourceNotFoundException("teacher", t));
+            studentList.addAll(new ArrayList<>(convertStudentsToStrSet(teacher.getStudents())));
+        });
+
+        Set<String> duplicatesCheck = new HashSet<>();
+
+        return new CommonStudentResponse(studentList.stream()
+                .filter(s -> !duplicatesCheck.add(s)).collect(Collectors.toSet()));
     }
 
     @Override

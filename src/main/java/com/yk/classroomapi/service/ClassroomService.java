@@ -14,7 +14,7 @@ public interface ClassroomService {
 
     void register(RegisterRequest registerRequest);
 
-    CommonStudentResponse getCommonStudents(String teacherEmail);
+    CommonStudentResponse getCommonStudents(List<String> teacherList);
 
     void suspendStudent(SuspendRequest suspendRequest);
 
