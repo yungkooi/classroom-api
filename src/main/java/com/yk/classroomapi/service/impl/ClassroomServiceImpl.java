@@ -94,8 +94,9 @@ public class ClassroomServiceImpl implements ClassroomService {
     /**
      * Will only throw an error if teacher is not found in database.
      * For students in the notification String, a student not found in database will still show as success as the
-     * requirement did not mention student not assigned under any teacher != student does not exist.
-     * (also, there is no option to add students without assigning them to a teacher)
+     * requirement did not mention that student not assigned under any teacher == student does not exist.
+     * However, there is no way to check if this student is suspended or not, so assumption here is to omit the
+     * result if student specified in notification string is not found in database.
      *
      * @param retrieveNotificationRequest
      * @return
@@ -110,6 +111,8 @@ public class ClassroomServiceImpl implements ClassroomService {
 
         Set<String> studentsInNotification = Stream.of(retrieveNotificationRequest.getNotification().split(" @"))
                 .skip(1).collect(Collectors.toSet());
+
+        System.out.println("students in notification: " + studentsInNotification);
 
         Set<String> studentsInNotificationNotSuspended = getAllStudents().stream()
                 .filter(s -> studentsInNotification.contains(s.getEmail()))
